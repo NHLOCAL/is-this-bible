@@ -9,3 +9,28 @@ You can try the model's capabilities easily,By downloading the release file from
 **To run the model, download the following libraries using pip**:
 
 `nltk`, `joblib`.
+
+-----
+
+**דוגמה:**
+
+קלט שלילי:
+```shell
+try_model.py "בגיטהאב ניתן להעלות מערכות קוד פתוח"
+```
+פלט:
+
+
+```shell
+Text: בגיטהאב ניתן להעלות מערכות קוד פתוח | Prediction: Other | Confidence Score: 0.0340
+```
+קלט חיובי:
+
+```shell
+try_model.py "עניה סערה לא נחמה הנה אנכי מרביץ בפוך אבניך"
+```
+פלט:
+
+```shell
+Text: עניה סערה לא נחמה הנה אנכי מרביץ בפוך אבניך ויסדתיך בספירים | Prediction: Bible | Confidence Score: 1.0000
+```
