@@ -1,7 +1,7 @@
 from sys import argv
 #import re
-#import nltk
-#from nltk.corpus import stopwords
+import nltk
+from nltk.corpus import stopwords
 import joblib
 
 
