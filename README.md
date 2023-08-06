@@ -4,4 +4,4 @@
 The model presents capabilities at a very high recognition level, for the Hebrew language.
 The complete dataset on which the model was trained is stored in the `bible_data.csv` file.
 
-You can try the model's capabilities easily, by downloading the model files `https://github.com/NHLOCAL/is-this-bible/releases/download/v1.0/is-this-bible.zip`.
+You can try the model's capabilities easily,By downloading the release file from here - https://github.com/NHLOCAL/is-this-bible/releases/download/v1.0/is-this-bible.zip.
