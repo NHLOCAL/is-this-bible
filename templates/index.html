@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="he">
+<body dir="rtl">
+<form method="POST" action="/">
+    <textarea name="new_text" rows="4" cols="50"></textarea><br><br>
+    <input type="submit" value="Check Text">
+</form>
+
+{% if prediction %}
+<h2>Prediction Result</h2>
+<p>טקסט: {{ new_text }}</p>
+<p>סוג הטקסט שזוהה: {{ prediction }}</p>
+<p>ציון ודאות: {{ confidence_score }}</p>
+{% endif %}
+
+</body>
+</html>
