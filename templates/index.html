@@ -1,17 +1,93 @@
 <!DOCTYPE html>
-<html lang="he">
-<body dir="rtl">
-<form method="POST" action="/">
-    <textarea name="new_text" rows="4" cols="50"></textarea><br><br>
-    <input type="submit" value="Check Text">
-</form>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>גילוי פסוקי התנ"ך באמצעות AI</title>
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .fixed-input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            background-color: #f2f2f2;
+            color: #333;
+            resize: none;
+        }
+        input[type="submit"] {
+            width: 90%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #5d8d77;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        input[type="submit"]:hover {
+            background-color: #507b66;
+        }
+        h1 {
+            color: #5d8d77;
+            margin-bottom: 5px;
+        }
+        h2 {
+            color: #777;
+            margin-top: 20px;
+        }
+        .result {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+            transition: all 0.5s ease-in-out;
+        }
+    </style>
+    <script>
+        function revealResults() {
+            var result = document.querySelector('.result');
+            result.style.opacity = 1;
+            result.style.marginTop = '20px';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>גילוי פסוקי התנ"ך באמצעות AI</h1>
+        <p>הקלידו את הטקסט שתרצו, וגלו האם הוא אכן מופיע בתנ"ך באמצעות קסם הבינה המלאכותית</p>
+        <form method="POST" action="/" onsubmit="revealResults()">
+            <textarea class="fixed-input" name="new_text" rows="4" cols="50" placeholder="הקלידו את הטקסט כאן..."></textarea><br>
+            <input type="submit" value="הפעילו את הקסם">
+        </form>
 
-{% if prediction %}
-<h2>Prediction Result</h2>
-<p>טקסט: {{ new_text }}</p>
-<p>סוג הטקסט שזוהה: {{ prediction }}</p>
-<p>ציון ודאות: {{ confidence_score }}</p>
-{% endif %}
-
+        <div class="result">
+            {% if prediction %}
+            <h2>הסודות התנ"כיים נחשפים</h2>
+            <p>הטקסט: {{ new_text }}</p>
+            <p>זוהה כ...: {{ prediction }}</p>
+            <p>ציון ודאות: {{ confidence_score }}</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
