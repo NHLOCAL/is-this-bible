@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import webbrowser
 import nltk
 from nltk.corpus import stopwords
 import joblib
@@ -30,4 +31,5 @@ def index():
 
 
 if __name__ == '__main__':
+    webbrowser.open('http://127.0.0.1:5000/')
     app.run(debug=True)
