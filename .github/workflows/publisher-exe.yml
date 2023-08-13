@@ -40,7 +40,7 @@ jobs:
 
     - name: Create Release
       id: create_release
-      uses: softprops/action-gh-release@v3
+      uses: softprops/action-gh-release@v1
       with:
         files: "dist/is_this_bible.exe" # Use double quotes and access the VERSION variable correctly
       env:
