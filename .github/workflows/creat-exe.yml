@@ -17,7 +17,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install pyinstaller nltk joblib
+        pip install pyinstaller nltk joblib sklearn
 
     - name: Build EXE
       run: pyinstaller --onefile try_model.py -n is_this_bible.exe
