@@ -26,7 +26,7 @@ jobs:
       run: mkdir -p artifacts
           
     - name: Copy Output File to Artifact Directory
-      run: cp main.exe artifacts/
+      run: cp dist/try_model artifacts/
       
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
