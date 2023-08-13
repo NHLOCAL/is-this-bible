@@ -20,13 +20,13 @@ jobs:
         pip install pyinstaller nltk joblib
 
     - name: Build EXE
-      run: pyinstaller --onefile try_model.py
+      run: pyinstaller --onefile try_model.py -n is_this_bible.exe
 
     - name: Create Artifact Directory
       run: mkdir -p artifacts
           
     - name: Copy Output File to Artifact Directory
-      run: cp dist/try_model artifacts/
+      run: cp dist/is_this_bible.exe artifacts/
       
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
