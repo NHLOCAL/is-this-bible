@@ -20,7 +20,7 @@ jobs:
         pip install pyinstaller nltk joblib scikit-learn
 
     - name: Build EXE
-      run: pyinstaller --onefile try_model.py -n is_this_bible.exe --add-data "c:\hostedtoolcache\windows\python\3.10.11\x64\lib\site-packages\sklearn;sklearn"
+      run: pyinstaller --onefile try_model.py -n is_this_bible.exe
 
     - name: Create Artifact Directory
       run: mkdir -p artifacts
