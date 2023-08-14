@@ -1,9 +1,7 @@
-name: Publish exe
+name: create an exe with additional files
 
 on:
   push:
-    tags:
-      - 'v*.*' # Trigger the workflow on tag creation with the format "vX.Y"
 
 jobs:
   build:
@@ -22,38 +20,26 @@ jobs:
         pip install pyinstaller nltk joblib scikit-learn
 
     - name: Build EXE
-      run: |
-        # Get the version number from the tag (e.g., v1.0.0)
-        $env:VERSION = $env:GITHUB_REF -replace '^refs/tags/v', ''
-        
-        # Run PyInstaller with custom name and version
-        pyinstaller --onefile try_model.py -n is_this_bible.exe
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERSION: ${{ github.ref }}
+      run: pyinstaller --onefile try_model.py -n is_this_bible.exe
 
-    - name: Set version number
-      run: |
-        # Get the version number from the tag (e.g., v1.0.0)
-        $env:VERSION = $env:GITHUB_REF -replace '^refs/tags/v', ''
-        echo $env:VERSION > version.txt # Update version.txt with your desired version
+    - name: Create Artifact Directory
+      run: mkdir -p artifacts
 
-    - name: Create Release
-      id: create_release
-      uses: softprops/action-gh-release@v1
+    - name: Copy Output File to Artifact Directory
+      run: copy dist\is_this_bible.exe artifacts\
+
+    - name: Prepare Additional Files
+      run: |
+        copy is_this_bible_model.pkl artifacts\
+        copy is_this_bible_vectorizer.pkl artifacts\
+
+    - name: Zip Artifact Directory
+      run: |
+        cd artifacts
+        powershell -Command "Compress-Archive -Path * -DestinationPath my-artifact.zip"
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
       with:
-        files: "dist/is_this_bible.exe" # Use double quotes and access the VERSION variable correctly
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Prepare Zip Archive
-      run: |
-        # Create a zip archive containing the EXE and PKL files
-        Compress-Archive -Path "dist/is_this_bible.exe", "is_this_bible_vectorizer.pkl", "is_this_bible_model.pkl" -DestinationPath "artifacts/is_this_bible.zip"
-      shell: powershell
-
-    - name: Upload Zip Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: my-zip-artifact
-        path: artifacts/is_this_bible.zip
+        name: my-artifact
+        path: artifacts\my-artifact.zip
