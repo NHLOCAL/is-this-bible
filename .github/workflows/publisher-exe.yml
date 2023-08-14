@@ -27,7 +27,7 @@ jobs:
         $env:VERSION = $env:GITHUB_REF -replace '^refs/tags/v', ''
         
         # Run PyInstaller with custom name and version
-        pyinstaller --onefile try_model.py -n is_this_bible.exe
+        pyinstaller --onefile try_model.py -n is-this-bible.exe
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         VERSION: ${{ github.ref }}
@@ -42,6 +42,6 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        files: "dist/Singles-Sorter.exe" # Use double quotes and access the VERSION variable correctly
+        files: "dist/is-this-bible.exe" # Use double quotes and access the VERSION variable correctly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
