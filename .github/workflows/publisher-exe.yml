@@ -32,15 +32,20 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         VERSION: ${{ github.ref }}
 
+    - name: Create Artifact Directory
+      run: mkdir -p artifacts
+      
+    - name: Copy Output File to Artifact Directory
+      run: copy dist\is-this-bible.exe artifacts\ 
 
     - name: Prepare Additional Files
       run: |
-        copy is_this_bible_model.pkl dist\
-        copy is_this_bible_vectorizer.pkl dist\
+        copy is_this_bible_model.pkl artifacts\
+        copy is_this_bible_vectorizer.pkl artifacts\
 
     - name: Zip Artifact Directory
       run: |
-        cd dist
+        cd artifacts
         powershell -Command "Compress-Archive -Path * -DestinationPath is-thus-bible.zip"
 
 
@@ -54,6 +59,6 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        files: "dist/is-this-bible.zip" # Use double quotes and access the VERSION variable correctly
+        files: "artifacts/is-this-bible.zip"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
