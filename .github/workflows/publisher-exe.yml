@@ -1,7 +1,9 @@
-name: create an exe with additional files
+name: create an exe with additional files and release
 
 on:
-  push:
+  release:
+    types:
+      - created
 
 jobs:
   build:
@@ -26,7 +28,7 @@ jobs:
       run: mkdir -p artifacts
 
     - name: Copy Output File to Artifact Directory
-      run: copy dist\is_this_bible.exe artifacts\
+      run: copy dist\is_this_bible.exe artifacts\  # Use 'copy' command on Windows
 
     - name: Prepare Additional Files
       run: |
@@ -36,10 +38,26 @@ jobs:
     - name: Zip Artifact Directory
       run: |
         cd artifacts
-        powershell -Command "Compress-Archive -Path * -DestinationPath my-artifact.zip"
+        powershell -Command "Compress-Archive -Path * -DestinationPath is-this-bible.zip"
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: my-artifact
-        path: artifacts\my-artifact.zip
+        tag_name: v1.1  # Replace with your desired tag/version
+        release_name: גרסת שחרור כללית  # Replace with your desired release name
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifacts\my-artifact.zip
+        asset_name: my-artifact.zip
+        asset_content_type: application/zip
