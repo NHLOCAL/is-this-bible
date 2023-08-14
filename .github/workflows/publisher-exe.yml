@@ -35,8 +35,8 @@ jobs:
 
     - name: Prepare Additional Files
       run: |
-        copy path\to\your\additional_file1.pkl dist\
-        copy path\to\your\additional_file2.pkl dist\
+        copy is_this_bible_model.pkl dist\
+        copy is_this_bible_vectorizer.pkl dist\
 
     - name: Zip Artifact Directory
       run: |
