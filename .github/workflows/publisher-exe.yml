@@ -1,19 +1,19 @@
-name: create an exe with additional files and release
+name: Publish Release
 
 on:
   push:
     tags:
-      - 'v*'  # Match version tags, like 'v1.0'
+      - 'v*.*' # Trigger the workflow on tag creation with the format "vX.Y"
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3 # Use v2 version for tag events
-
+      uses: actions/checkout@v3
+      
     - name: Setup Python
-      uses: actions/setup-python@v3  # Use v2 version for tag events
+      uses: actions/setup-python@v3
       with:
         python-version: '3.10'
 
@@ -22,28 +22,26 @@ jobs:
         pip install pyinstaller nltk joblib scikit-learn
 
     - name: Build EXE
-      run: pyinstaller --onefile try_model.py -n is_this_bible.exe
-
-    - name: Create Artifact Directory
-      run: mkdir -p artifacts
-
-    - name: Copy Output File to Artifact Directory
-      run: copy dist\is_this_bible.exe artifacts\  # Use 'copy' command on Windows
-
-    - name: Prepare Additional Files
       run: |
-        copy is_this_bible_model.pkl artifacts\
-        copy is_this_bible_vectorizer.pkl artifacts\
+        # Get the version number from the tag (e.g., v1.0.0)
+        $env:VERSION = $env:GITHUB_REF -replace '^refs/tags/v', ''
+        
+        # Run PyInstaller with custom name and version
+        run: pyinstaller --onefile try_model.py -n is_this_bible.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERSION: ${{ github.ref }}
 
-    - name: Zip Artifact Directory
+    - name: Set version number
       run: |
-        cd artifacts
-        powershell -Command "Compress-Archive -Path * -DestinationPath my-artifact.zip"
+        # Get the version number from the tag (e.g., v1.0.0)
+        $env:VERSION = $env:GITHUB_REF -replace '^refs/tags/v', ''
+        echo $env:VERSION > version.txt # Update version.txt with your desired version
 
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        files: "artifacts/my-artifact.zip" # Specify the correct path to your zip file
+        files: "dist/is_this_bible.exe" # Use double quotes and access the VERSION variable correctly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
