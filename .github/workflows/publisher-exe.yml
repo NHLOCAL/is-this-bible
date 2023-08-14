@@ -40,13 +40,15 @@ jobs:
 
     - name: Prepare Additional Files
       run: |
+        cd
         copy is_this_bible_model.pkl artifacts\
         copy is_this_bible_vectorizer.pkl artifacts\
 
     - name: Zip Artifact Directory
       run: |
         cd artifacts
-        powershell -Command "Compress-Archive -Path * -DestinationPath is-thus-bible.zip"
+        powershell -Command "Compress-Archive -Path * -DestinationPath is-this-bible.zip"
+        
 
 
     - name: Set version number
