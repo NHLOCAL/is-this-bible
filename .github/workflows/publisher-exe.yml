@@ -40,7 +40,7 @@ jobs:
 
     - name: Prepare Additional Files
       run: |
-        cd
+        echo %cd%
         copy is_this_bible_model.pkl artifacts\
         copy is_this_bible_vectorizer.pkl artifacts\
 
