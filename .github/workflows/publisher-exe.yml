@@ -32,6 +32,18 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         VERSION: ${{ github.ref }}
 
+
+    - name: Prepare Additional Files
+      run: |
+        copy path\to\your\additional_file1.pkl dist\
+        copy path\to\your\additional_file2.pkl dist\
+
+    - name: Zip Artifact Directory
+      run: |
+        cd dist
+        powershell -Command "Compress-Archive -Path * -DestinationPath is-thus-bible.zip"
+
+
     - name: Set version number
       run: |
         # Get the version number from the tag (e.g., v1.0.0)
@@ -42,6 +54,6 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        files: "dist/is-this-bible.exe" # Use double quotes and access the VERSION variable correctly
+        files: "dist/is-this-bible.zip" # Use double quotes and access the VERSION variable correctly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
