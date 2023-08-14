@@ -1,17 +1,19 @@
 name: create an exe with additional files and release
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'  # Match version tags, like 'v1.0'
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3  # Use v2 version for tag events
 
     - name: Setup Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v3  # Use v2 version for tag events
       with:
         python-version: '3.10'
 
@@ -36,24 +38,21 @@ jobs:
     - name: Zip Artifact Directory
       run: |
         cd artifacts
-        powershell -Command "Compress-Archive -Path * -DestinationPath is-this-bible.zip"
+        powershell -Command "Compress-Archive -Path * -DestinationPath my-artifact.zip"
 
-    - name: Create Release
+    - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v1.1  # Replace with your desired tag/version
-        release_name: גרסת שחרור כללית  # Replace with your desired release name
+        tag_name: ${{ github.ref }}  # Use the pushed tag as the release version
+        release_name: Release ${{ github.ref }}
+        body: |
+          Release ${{ github.ref }}
         draft: false
         prerelease: false
 
     - name: Upload Release Asset
-      id: upload-release-asset
       uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: artifacts\my-artifact.zip
