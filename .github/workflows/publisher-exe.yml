@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3  # Use v2 version for tag events
+      uses: actions/checkout@v3 # Use v2 version for tag events
 
     - name: Setup Python
       uses: actions/setup-python@v3  # Use v2 version for tag events
@@ -40,21 +40,10 @@ jobs:
         cd artifacts
         powershell -Command "Compress-Archive -Path * -DestinationPath my-artifact.zip"
 
-    - name: Create GitHub Release
+    - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.ref }}  # Use the pushed tag as the release version
-        release_name: Release ${{ github.ref }}
-        body: |
-          Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: artifacts\my-artifact.zip
-        asset_name: my-artifact.zip
-        asset_content_type: application/zip
+        files: "artifacts/my-artifact.zip" # Specify the correct path to your zip file
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
